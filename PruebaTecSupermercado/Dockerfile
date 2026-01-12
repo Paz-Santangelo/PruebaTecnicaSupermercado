@@ -2,16 +2,11 @@
 FROM eclipse-temurin:17-jdk-alpine AS build
 WORKDIR /app
 
-# Copiar archivos de Maven
-COPY pom.xml .
-COPY mvnw .
-COPY .mvn .mvn
+# Copiar todo el proyecto
+COPY . .
 
-# Descargar dependencias
-RUN ./mvnw dependency:go-offline -B
-
-# Copiar código fuente
-COPY src ./src
+# Dar permisos de ejecución al Maven Wrapper
+RUN chmod +x mvnw
 
 # Compilar el proyecto
 RUN ./mvnw clean package -DskipTests
